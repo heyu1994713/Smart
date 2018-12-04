@@ -1,11 +1,11 @@
 <template>
-	<li class="nav-cart">
+	<li class="nav-cart" @mouseenter="carShowhandle" @mouseleave="hideShowhandle">
 							<a href="javascript:;">购物车</a>
 							<!--根据class改变颜色-->
-							<span class="cart-empty-num cart-num">
-								<i>0</i>
+							<span class="cart-empty-num" :class="{'cart-num':count>0}">
+								<i>{{count}}</i>
 							</span>
-							<div class="nav-cart-wrapper">
+							<div class="nav-cart-wrapper" v-if="carShow">
 								<div class="nav-cart-list">
 									<div class="empty" v-if="count<=0">
 										<h3>购物车为空</h3>
@@ -67,11 +67,20 @@
 			},
 			totel(){
 				return this.$store.getters.totlePrice
+			},
+			carShow(){
+				return this.$store.state.carShow
 			}
 		},
 		methods:{
 			delCarpanelData(id){
 				this.$store.commit('delCarpanelData',id)
+			},
+			carShowhandle(){
+				this.$store.commit('showCar')
+			},
+			hideShowhandle(){
+				this.$store.commit('hideCar')
 			}
 		}
 	}

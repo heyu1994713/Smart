@@ -9,7 +9,9 @@ let store=new Vuex.Store({
 	state:{
 		//存放数据
 		carPanelData:[],
-		maxoff:false
+		maxoff:false,
+		//是否显示购物车
+		carShow:false
 	},
 	//统计计算
 	getters:{
@@ -39,12 +41,15 @@ let store=new Vuex.Store({
 					if(goods.count>goods.limit_num){
 					goods.count--;
 					state.maxoff=true;
+					return
 				}
 					boff=false;
+					state.carShow=true
 				}
 				
 			})
 			if(boff){
+				state.carShow=true
 				let goodsData=data;
 				Vue.set(goodsData,'count',1);
 				state.carPanelData.push(goodsData);
@@ -62,6 +67,17 @@ let store=new Vuex.Store({
 		},
 		closePrompt(state){
 			state.maxoff=false;
+		},
+		//显示购物车
+		showCar(state){
+			state.carShow=true
+		},
+		//隐藏购物车
+		hideCar(state){
+			setTimeout(() => {
+				state.carShow=false
+			},500)
+			
 		}
 	}
 })
