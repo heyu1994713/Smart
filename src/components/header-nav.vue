@@ -45,7 +45,7 @@
 					<div class="container">
 						<ul class="nav-list">
 							<li><router-link to='/Home'>首页</router-link></li>
-							<li  v-on:mouseover='add' v-on:mouseout='del'><router-link to='' >手机</router-link></li>
+							<li v-on:mouseover='add' v-on:mouseout='del'><router-link to='' >手机</router-link></li>
 							<li><router-link to='/PageOne'>“足迹系列”手感膜</router-link></li>
 							<li class="active"><router-link to='/Shop'>官方配件</router-link></li>
 							<li><router-link to='/PageTwo'>周边产品</router-link></li>
@@ -55,16 +55,32 @@
 						</ul>
 					</div>
 				</div>
-
+                <Phone></Phone>
 			</div>
 	</div>
 </template>
 
 <script>
 	import carPanel from './car-panel'
+	import Phone from './phone'
 	  export default {
+	  	data(){
+	  		return{
+	  			isActive:false
+	  		}
+	  	},
+	  	methods:{
+	  		add:function(){
+	  			this.isActive=true;
+	  			
+	  		},
+	  		del:function(){
+	  			this.isActive=false;
+	  		}
+	  	},
 		components: {
-			carPanel
+			carPanel,
+			Phone
 		}
 	}
 </script>

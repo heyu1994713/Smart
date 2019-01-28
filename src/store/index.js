@@ -11,7 +11,13 @@ let store=new Vuex.Store({
 		carPanelData:[],
 		maxoff:false,
 		//是否显示购物车
-		carShow:false
+		carShow:false,
+		//创建小球
+		ball:{
+			show:false,//显示
+			el:null,//点击哪一个
+			img:''
+		}
 	},
 	//统计计算
 	getters:{
@@ -41,10 +47,15 @@ let store=new Vuex.Store({
 					if(goods.count>goods.limit_num){
 					goods.count--;
 					state.maxoff=true;
+					boff=false;
 					return
 				}
-					boff=false;
+					boff=false
 					state.carShow=true
+					state.ball.show=true
+					state.ball.img=data.ali_image
+					state.ball.el=event.path[0]
+					console.log(event)
 				}
 				
 			})
@@ -53,6 +64,11 @@ let store=new Vuex.Store({
 				let goodsData=data;
 				Vue.set(goodsData,'count',1);
 				state.carPanelData.push(goodsData);
+				state.carShow=true
+				state.ball.show=true
+				state.ball.img=data.ali_image
+				state.ball.el=event.path[0]
+				console.log(event)
 			}
 			
 			console.log(state.carPanelData)

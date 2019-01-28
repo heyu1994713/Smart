@@ -1,6 +1,6 @@
 <template>
 	<li class="nav-cart" @mouseenter="carShowhandle" @mouseleave="hideShowhandle">
-							<a href="javascript:;">购物车</a>
+							<a href="javascript:;" class="ball-rect">购物车</a>
 							<!--根据class改变颜色-->
 							<span class="cart-empty-num" :class="{'cart-num':count>0}">
 								<i>{{count}}</i>
@@ -52,6 +52,15 @@
 									</div>
 								</div>
 							</div>
+							<transition name='ball'
+								v-on:before-enter='beforeEnter'
+								v-on:enter='enter'
+								v-on:after-enter='afterEnter'
+								v-bind:css='true'>
+								<div class="addcart-mask" v-show="ball.show">
+									<img class="mask-item" />
+								</div>
+							</transition>
 						</li>
 </template>
 
@@ -70,6 +79,9 @@
 			},
 			carShow(){
 				return this.$store.state.carShow
+			},
+			ball(){
+				return this.$store.state.ball
 			}
 		},
 		methods:{
@@ -81,10 +93,41 @@
 			},
 			hideShowhandle(){
 				this.$store.commit('hideCar')
+			},
+			beforeEnter(el){
+				//初始状态
+				let rect=this.ball.el.getBoundingClientRect();
+				//购物车的位置
+				let rectE=document.getElementsByClassName('ball-rect')[0].getBoundingClientRect()
+				//获取当前小球
+				let ball=document.getElementsByClassName('mask-item')[0]
+				//计算位置
+				let x=rectE.left+15-(rect.left+rect.width/2)
+				let y=rect.top+rect.height/2-(rectE.top+10)
+				el.style.transform='translate3d(0,'+y+'px,0)'
+				ball.style.transform='translate3d(-'+x+'px,0,0)'
+				ball.src=this.ball.img
+			},
+			enter(el){
+				//运动状态
+				let a=el.offsetHeight
+				el.style.transform='translate3d(0,0,0)'
+			    document.getElementsByClassName('mask-item')[0].style.transform='translate3d(0,0,0)'
+				
+			},
+			afterEnter(){
+				//结束状态
+				this.ball.show=false;
 			}
 		}
 	}
 </script>
 
 <style>
+.ball-enter-active{
+	transition:1s cubic-bezier(1,.06,0,.95)
+}
+.ball-enter-active .mask-item{
+	transition:1s cubic-bezier(0,0,0,0) 
+}
 </style>
